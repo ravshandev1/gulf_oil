@@ -27,7 +27,7 @@ class ItemAPI(generics.ListAPIView):
     def get_queryset(self):
         name = self.request.query_params.get('name')
         if name:
-            return Item.objects.filter(menu_id=self.kwargs.get('pk'), name__exact=name)
+            return Item.objects.filter(menu_id=self.kwargs.get('pk'), name__icontains=name)
         return Item.objects.filter(menu_id=self.kwargs.get('pk'))
 
 
