@@ -1,0 +1,8 @@
+version: '3.11'
+services:
+  django:
+    build: .
+    container_name: gulf_django
+    command: python manage.py runserver 0.0.0.0:8002
+    ports:
+      - "8002:8002"

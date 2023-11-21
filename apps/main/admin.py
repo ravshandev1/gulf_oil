@@ -1,14 +1,30 @@
 from django.contrib import admin
-from .models import Menu, Item
-from .translations import CustomTranslationsAdmin
+from .models import Menu, Item, Country, Contact, ContactPublic
+from .translations import CustomAdmin, InlineAdmin
+
+
+class ContactInline(admin.StackedInline):
+    model = Contact
+    extra = 0
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'code']
+    inlines = [ContactInline]
+
+
+@admin.register(ContactPublic)
+class ContactPublicAdmin(admin.ModelAdmin):
+    list_display = ['phone', 'email']
+
+
+class ItemInline(InlineAdmin):
+    model = Item
+    extra = 0
 
 
 @admin.register(Menu)
-class MenuAdmin(CustomTranslationsAdmin):
+class MenuAdmin(CustomAdmin):
     list_display = ['name']
-
-
-@admin.register(Item)
-class ItemAdmin(CustomTranslationsAdmin):
-    list_filter = ['menu']
-    list_display = ['name', 'menu']
+    inlines = [ItemInline]

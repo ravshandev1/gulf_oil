@@ -1,6 +1,19 @@
-from rest_framework import generics, views, response
-from .models import Menu, Item
-from .serializers import MenuSerializer, ItemSerializer
+from rest_framework import generics
+from .models import Menu, Item, ContactPublic, Contact, Country
+from .serializers import MenuSerializer, ItemSerializer, ItemPDFSerializer, ContactSerializer, ContactPublicSerializer
+
+
+class ContactPublicAPI(generics.ListAPIView):
+    queryset = ContactPublic.objects.all()
+    serializer_class = ContactPublicSerializer
+
+
+class ContactAPI(generics.ListAPIView):
+    serializer_class = ContactSerializer
+
+    def get_queryset(self):
+        country = Country.objects.filter(code__exact=self.request.query_params.get('code')).first()
+        return Contact.objects.filter(country=country)
 
 
 class MenuAPI(generics.ListAPIView):
@@ -8,17 +21,16 @@ class MenuAPI(generics.ListAPIView):
     serializer_class = MenuSerializer
 
 
-class ItemAPI(views.APIView):
-    def get(self, request, *args, **kwargs):
-        qs = Item.objects.filter(menu_id=self.kwargs.get('pk'))
+class ItemAPI(generics.ListAPIView):
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
         name = self.request.query_params.get('name')
         if name:
-            qs = qs.filter(name__icontains=name)
-        serializer = ItemSerializer(qs, many=True)
-        return response.Response(serializer.data)
+            return Item.objects.filter(menu_id=self.kwargs.get('pk'), name__exact=name)
+        return Item.objects.filter(menu_id=self.kwargs.get('pk'))
 
 
-class ItemRetrieveAPI(views.APIView):
-    def get(self, request, *args, **kwargs):
-        obj = Item.objects.filter(id=self.kwargs.get('pk')).first()
-        return response.Response({'pdf': f"https://gulf.ravshandev.uz{obj.pdf.url}"})
+class ItemPDFAPI(generics.RetrieveAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemPDFSerializer

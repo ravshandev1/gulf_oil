@@ -1,8 +1,10 @@
 from django.urls import path
-from .views import MenuAPI, ItemAPI, ItemRetrieveAPI
+from .views import MenuAPI, ItemAPI, ItemPDFAPI, ContactAPI, ContactPublicAPI
 
 urlpatterns = [
     path('', MenuAPI.as_view()),
     path('<int:pk>/', ItemAPI.as_view()),
-    path('item/<int:pk>/', ItemRetrieveAPI.as_view()),
+    path('item/<int:pk>/', ItemPDFAPI.as_view()),
+    path('contact-public/', ContactPublicAPI.as_view()),
+    path('contact/', ContactAPI.as_view()),
 ]

@@ -1,9 +1,21 @@
 from modeltranslation.translator import TranslationOptions, register
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
 from .models import Menu, Item
 
 
-class CustomTranslationsAdmin(TranslationAdmin):
+class CustomAdmin(TranslationAdmin):
+    class Media:
+        js = (
+            'https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+
+
+class InlineAdmin(TranslationStackedInline):
     class Media:
         js = (
             'https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
@@ -22,4 +34,4 @@ class SubjectTrans(TranslationOptions):
 
 @register(Item)
 class SubjectTrans(TranslationOptions):
-    fields = ('description', 'pdf')
+    fields = ['pdf']
