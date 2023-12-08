@@ -1,17 +1,18 @@
 from django.contrib import admin
-from .models import Menu, Item, Country, Contact, ContactPublic
+from .models import Menu, Item, Contact, ContactPublic, Advertising
 from .translations import CustomAdmin, InlineAdmin
 
 
-class ContactInline(admin.StackedInline):
-    model = Contact
-    extra = 0
+@admin.register(Advertising)
+class AdvertisingAdmin(admin.ModelAdmin):
+    list_display = ['id']
 
 
-@admin.register(Country)
-class CountryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'code']
-    inlines = [ContactInline]
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ['staff', 'phone']
+    filter_horizontal = ['country']
+    exclude = ['country_count']
 
 
 @admin.register(ContactPublic)

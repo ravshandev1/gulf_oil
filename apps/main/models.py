@@ -27,8 +27,8 @@ class Country(models.Model):
 
 
 class ContactPublic(models.Model):
-    address = models.TextField()
-    email = models.EmailField()
+    address = models.TextField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
     website = models.URLField()
     phone = models.CharField(max_length=25)
 
@@ -37,11 +37,27 @@ class ContactPublic(models.Model):
 
 
 class Contact(models.Model):
-    country = models.ForeignKey(Country, models.CASCADE, related_name='contacts')
-    address = models.TextField()
-    email = models.EmailField()
+    country = models.ManyToManyField(Country, related_name='contacts')
+    address = models.TextField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
     staff = models.CharField(max_length=250)
     phone = models.CharField(max_length=25)
+    country_count = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.staff
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save()
+        self.country_count = self.country.count()
+        super().save()
+
+    class Meta:
+        ordering = ['-country_count']
+
+
+class Advertising(models.Model):
+    image = models.FileField(upload_to='advertising')
+
+    def __str__(self):
+        return self.image.name

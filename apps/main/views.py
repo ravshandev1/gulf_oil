@@ -1,6 +1,12 @@
 from rest_framework import generics
-from .models import Menu, Item, ContactPublic, Contact, Country
-from .serializers import MenuSerializer, ItemSerializer, ItemPDFSerializer, ContactSerializer, ContactPublicSerializer
+from .models import Menu, Item, ContactPublic, Contact, Advertising
+from .serializers import MenuSerializer, ItemSerializer, ItemPDFSerializer, ContactSerializer, ContactPublicSerializer, \
+    AdvertisingSerializer
+
+
+class AdvertisingAPI(generics.ListAPIView):
+    queryset = Advertising.objects.all()
+    serializer_class = AdvertisingSerializer
 
 
 class ContactPublicAPI(generics.ListAPIView):
@@ -12,8 +18,7 @@ class ContactAPI(generics.ListAPIView):
     serializer_class = ContactSerializer
 
     def get_queryset(self):
-        country = Country.objects.filter(code__exact=self.request.query_params.get('code')).first()
-        return Contact.objects.filter(country=country)
+        return Contact.objects.filter(country__code__exact=self.request.query_params.get('code'))
 
 
 class MenuAPI(generics.ListAPIView):

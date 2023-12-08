@@ -16,6 +16,7 @@ SECRET_KEY = 'django-insecure-awrg!s8fe-dhng=*qe&i@ex7@cj=8mlkgimkpqb1(xc%^sd7qr
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://gulf.ravshandev.uz']
 
 # Application definition
 

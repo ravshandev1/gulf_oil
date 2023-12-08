@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Menu, Item, ContactPublic, Contact
+from .models import Menu, Item, ContactPublic, Contact, Advertising
 
 
 class ContactPublicSerializer(serializers.ModelSerializer):
@@ -19,6 +19,12 @@ class MenuSerializer(serializers.ModelSerializer):
         model = Menu
         fields = ['id', 'name', 'image']
 
+    image = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_image(obj):
+        return f"https://gulf.ravshandev.uz{obj.image.url}"
+
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +36,21 @@ class ItemPDFSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         fields = ['pdf']
+
+    pdf = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_pdf(obj):
+        return f"https://gulf.ravshandev.uz{obj.pdf.url}"
+
+
+class AdvertisingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = ['id', 'image']
+
+    image = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_image(obj):
+        return f"https://gulf.ravshandev.uz{obj.image.url}"
