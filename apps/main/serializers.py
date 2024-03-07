@@ -12,9 +12,8 @@ class ContactPublicSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
-        fields = ['address', 'email', 'staff', 'phone', 'pic']
+        fields = ['address', 'email', 'staff', 'phone']
 
-    pic = ContactPublicSerializer(many=True)
 
 
 class MenuSerializer(serializers.ModelSerializer):
