@@ -11,6 +11,7 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-_eg!e&8w5%ysdozjw#j@9ct)u&1u8wgludh@^*qgb#8+tfo&yh'
+ALGORITIHM = 'RS256'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
