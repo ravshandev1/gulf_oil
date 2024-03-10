@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 import sys
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,6 +14,12 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-_eg!e&8w5%ysdozjw#j@9ct)u&1u8wgludh@^*qgb#8+tfo&yh'
 ALGORITIHM = 'RS256'
+with open("private.pem", "rb") as key_file:
+    PRIVET_KEY = serialization.load_pem_private_key(
+        key_file.read(),
+        password=b'password',
+        backend=default_backend()
+    )
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -84,8 +92,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'gulf',
+        'USER': 'dbuser',
+        'PASSWORD': 'password',
+        'HOST': '16.171.2.79',
+        'PORT': 5432,
     }
 }
 
