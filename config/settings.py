@@ -17,7 +17,7 @@ ALGORITIHM = 'RS256'
 with open("private.pem", "rb") as key_file:
     PRIVET_KEY = serialization.load_pem_private_key(
         key_file.read(),
-        password=b'password',
+        password=b'gulf_oil',
         backend=default_backend()
     )
 # SECURITY WARNING: don't run with debug turned on in production!
